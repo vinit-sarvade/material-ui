@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import shallowEqual from 'recompose/shallowEqual';
-import {fade} from '../utils/colorManipulator';
+import { fade } from '../utils/colorManipulator';
 import transitions from '../styles/transitions';
 import EnhancedButton from '../internal/EnhancedButton';
 import IconButton from '../IconButton';
@@ -27,8 +27,8 @@ function getStyles(props, context, state) {
     secondaryTextLines,
   } = props;
 
-  const {muiTheme} = context;
-  const {listItem} = muiTheme;
+  const { muiTheme } = context;
+  const { listItem } = muiTheme;
 
   const textColor = muiTheme.baseTheme.palette.textColor;
   const hoverColor = props.hoverColor || fade(textColor, 0.1);
@@ -43,8 +43,8 @@ function getStyles(props, context, state) {
   const styles = {
     root: {
       backgroundColor: (isKeyboardFocused || state.hovered) &&
-      !state.rightIconButtonHovered &&
-      !state.rightIconButtonKeyboardFocused ? hoverColor : null,
+        !state.rightIconButtonHovered &&
+        !state.rightIconButtonKeyboardFocused ? hoverColor : null,
       color: textColor,
       display: 'block',
       fontSize: 16,
@@ -58,8 +58,8 @@ function getStyles(props, context, state) {
       marginLeft: nestedLevel * listItem.nestedLevelDepth,
       paddingLeft: leftIcon || leftAvatar || leftCheckbox || insetChildren ? 72 : 16,
       paddingRight: rightIcon || rightAvatar || rightIconButton ||
-                    (nestedItems.length && autoGenerateNestedIndicator) ?
-                    56 : rightToggle ? 72 : 16,
+        (nestedItems.length && autoGenerateNestedIndicator) ?
+        56 : rightToggle ? 72 : 16,
       paddingBottom: singleAvatar ? 20 : 16,
       paddingTop: singleNoAvatar || threeLine ? 16 : 20,
       position: 'relative',
@@ -319,12 +319,12 @@ class ListItem extends Component {
     insetChildren: false,
     nestedItems: [],
     nestedLevel: 0,
-    onKeyboardFocus: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-    onNestedListToggle: () => {},
-    onTouchEnd: () => {},
-    onTouchStart: () => {},
+    onKeyboardFocus: () => { },
+    onMouseEnter: () => { },
+    onMouseLeave: () => { },
+    onNestedListToggle: () => { },
+    onTouchEnd: () => { },
+    onTouchStart: () => { },
     open: null,
     primaryTogglesNestedList: false,
     secondaryTextLines: 1,
@@ -352,9 +352,9 @@ class ListItem extends Component {
   componentWillReceiveProps(nextProps) {
     // update the state when the component is controlled.
     if (nextProps.open !== null)
-      this.setState({open: nextProps.open});
+      this.setState({ open: nextProps.open });
     if (nextProps.disabled && this.state.hovered)
-      this.setState({hovered: false});
+      this.setState({ hovered: false });
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -433,7 +433,7 @@ class ListItem extends Component {
   }
 
   createTextElement(styles, data, key) {
-    const {prepareStyles} = this.context.muiTheme;
+    const { prepareStyles } = this.context.muiTheme;
     if (React.isValidElement(data)) {
       let style = Object.assign({}, styles, data.props.style);
       if (typeof data.type === 'string') { // if element is a native dom node
@@ -453,22 +453,22 @@ class ListItem extends Component {
   }
 
   handleKeyboardFocus = (event, isKeyboardFocused) => {
-    this.setState({isKeyboardFocused: isKeyboardFocused});
+    this.setState({ isKeyboardFocused: isKeyboardFocused });
     this.props.onKeyboardFocus(event, isKeyboardFocused);
   };
 
   handleMouseEnter = (event) => {
-    if (!this.state.touch) this.setState({hovered: true});
+    if (!this.state.touch) this.setState({ hovered: true });
     this.props.onMouseEnter(event);
   };
 
   handleMouseLeave = (event) => {
-    this.setState({hovered: false});
+    this.setState({ hovered: false });
     this.props.onMouseLeave(event);
   };
 
   handleClick = (event) => {
-    if (this.props.onClick) {
+    if (this.props.onClick && !this.props.disabled) {
       this.props.onClick(event);
     }
 
@@ -484,7 +484,7 @@ class ListItem extends Component {
     event.stopPropagation();
 
     if (this.props.open === null) {
-      this.setState({open: !this.state.open}, () => {
+      this.setState({ open: !this.state.open }, () => {
         this.props.onNestedListToggle(this);
       });
     } else {
@@ -514,13 +514,13 @@ class ListItem extends Component {
 
   handleRightIconButtonMouseLeave = (event) => {
     const iconButton = this.props.rightIconButton;
-    this.setState({rightIconButtonHovered: false});
+    this.setState({ rightIconButtonHovered: false });
     if (iconButton && iconButton.props.onMouseLeave) iconButton.props.onMouseLeave(event);
   };
 
   handleRightIconButtonMouseEnter = (event) => {
     const iconButton = this.props.rightIconButton;
-    this.setState({rightIconButtonHovered: true});
+    this.setState({ rightIconButtonHovered: true });
     if (iconButton && iconButton.props.onMouseEnter) iconButton.props.onMouseEnter(event);
   };
 
@@ -539,12 +539,12 @@ class ListItem extends Component {
   };
 
   handleTouchStart = (event) => {
-    this.setState({touch: true});
+    this.setState({ touch: true });
     this.props.onTouchStart(event);
   };
 
   handleTouchEnd = (event) => {
-    this.setState({touch: true});
+    this.setState({ touch: true });
     this.props.onTouchEnd(event);
   }
 
@@ -597,7 +597,7 @@ class ListItem extends Component {
       ...other
     } = this.props;
 
-    const {prepareStyles} = this.context.muiTheme;
+    const { prepareStyles } = this.context.muiTheme;
     const styles = getStyles(this.props, this.context, this.state);
     const contentChildren = [children];
 
@@ -719,26 +719,26 @@ class ListItem extends Component {
       <div>
         {
           simpleLabel ? this.createLabelElement(styles, contentChildren, other) :
-          disabled ? this.createDisabledElement(styles, contentChildren, other) : (
-            <EnhancedButton
-              containerElement={containerElement}
-              {...other}
-              disableKeyboardFocus={disableKeyboardFocus || this.state.rightIconButtonKeyboardFocused}
-              onKeyboardFocus={this.handleKeyboardFocus}
-              onMouseLeave={this.handleMouseLeave}
-              onMouseEnter={this.handleMouseEnter}
-              onTouchStart={this.handleTouchStart}
-              onTouchEnd={this.handleTouchEnd}
-              onClick={this.handleClick}
-              disabled={disabled}
-              ref={(node) => this.button = node}
-              style={Object.assign({}, styles.root, style)}
-            >
-              <div style={prepareStyles(Object.assign(styles.innerDiv, innerDivStyle))}>
-                {contentChildren}
-              </div>
-            </EnhancedButton>
-          )
+            disabled ? this.createDisabledElement(styles, contentChildren, other) : (
+              <EnhancedButton
+                containerElement={containerElement}
+                {...other}
+                disableKeyboardFocus={disableKeyboardFocus || this.state.rightIconButtonKeyboardFocused}
+                onKeyboardFocus={this.handleKeyboardFocus}
+                onMouseLeave={this.handleMouseLeave}
+                onMouseEnter={this.handleMouseEnter}
+                onTouchStart={this.handleTouchStart}
+                onTouchEnd={this.handleTouchEnd}
+                onClick={this.handleClick}
+                disabled={disabled}
+                ref={(node) => this.button = node}
+                style={Object.assign({}, styles.root, style)}
+              >
+                <div style={prepareStyles(Object.assign(styles.innerDiv, innerDivStyle))}>
+                  {contentChildren}
+                </div>
+              </EnhancedButton>
+            )
         }
         {nestedList}
       </div>

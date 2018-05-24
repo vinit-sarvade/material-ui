@@ -13,6 +13,7 @@ icon-builder/jsx
 .idea
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 jsconfig.json
 
 # OS files
