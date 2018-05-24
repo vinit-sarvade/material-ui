@@ -135,15 +135,17 @@ class TableBody extends Component {
 
   componentDidMount() {
     if (!this.props.preScanRows) {
-      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+      this.setState({
+        // eslint-disable-line react/no-did-mount-set-state
         selectedRows: this.getSelectedRows(this.props),
       });
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    const selectedRows = this.getSelectedRows(nextProps);
     if (this.props.allRowsSelected !== nextProps.allRowsSelected) {
-      if (!nextProps.allRowsSelected) {
+      if (!nextProps.allRowsSelected && nextProps.children.length === selectedRows.length) {
         this.setState({
           selectedRows: [],
         });
@@ -152,11 +154,11 @@ class TableBody extends Component {
     }
 
     this.setState({
-      selectedRows: this.getSelectedRows(nextProps),
+      selectedRows,
     });
   }
 
-  isControlled = false
+  isControlled = false;
 
   handleClickAway = () => {
     if (this.props.deselectOnClickaway && this.state.selectedRows.length > 0) {
@@ -185,7 +187,7 @@ class TableBody extends Component {
         const props = {
           hoverable: this.props.showRowHover,
           selected: this.isRowSelected(rowNumber),
-          striped: this.props.stripedRows && (rowNumber % 2 === 0),
+          striped: this.props.stripedRows && rowNumber % 2 === 0,
           rowNumber: rowNumber++,
         };
 
@@ -193,9 +195,7 @@ class TableBody extends Component {
           props.displayBorder = false;
         }
 
-        const children = [
-          this.createRowCheckboxColumn(props),
-        ];
+        const children = [this.createRowCheckboxColumn(props)];
 
         React.Children.forEach(child.props.children, (child) => {
           children.push(child);
@@ -224,9 +224,7 @@ class TableBody extends Component {
         }}
       >
         <Checkbox
-          name={name}
-          value="selected"
-          disabled={disabled}
+          name={name} value="selected" disabled={disabled}
           checked={rowProps.selected}
         />
       </TableRowColumn>
@@ -365,7 +363,7 @@ class TableBody extends Component {
 
   genRangeOfValues(start, offset) {
     const values = [];
-    const dir = (offset > 0) ? -1 : 1; // This forces offset to approach 0 from either direction.
+    const dir = offset > 0 ? -1 : 1; // This forces offset to approach 0 from either direction.
     while (offset !== 0) {
       values.push(start + offset);
       offset += dir;
